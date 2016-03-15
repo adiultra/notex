@@ -1,6 +1,15 @@
 import os
 import edit
 
+'''
+Terminologies:
+
+node :
+    the container or root, in this case notebook is node for a note
+    bare :
+        A note with no notebook. A spare note.
+'''
+
 
 class note:
     'Note class to simulate a note'
@@ -9,7 +18,8 @@ class note:
         self,
         title='',
         tags=[],
-        content=''
+        content='',
+        node='bare'
     ):
         if len(title):
             self.title = title
@@ -31,17 +41,17 @@ class note:
         else:
             self.content = content
 
+        self.node = node
+
         self.file = open('notebook/'+self.title+'.txt', 'w')
         self.rewrite()
 
     def display(self):
         'Display the note, This uses `pager` since the notes may be long'
-
         os.system('pager notebook/'+self.title+'.txt')
 
     def edit(self):
         'Edit the note content'
-
         self.content = edit.editor(
             box=False,
             title=self.title,
@@ -51,12 +61,10 @@ class note:
 
     def addtag(self, tag):
         'Add a tag to note'
-
         self.tags.append(tag)
 
     def rewrite(self):
         'Rewrite the note to the file, works as a save function'
-
         towrite = 'Title : '+self.title+'\n\n'
         towrite += repr(self.tags)+'\n\n'
         towrite += self.content
@@ -65,7 +73,6 @@ class note:
 
     def finish(self):
         'Close the file'
-
         self.file.close()
 
 
@@ -81,14 +88,13 @@ class notebook:
 
     def display(self):
         'Display the title of notes of notebook'
-
         print('\nThe following notes are in', self.title)
 
         for note in self.notelist:
             print('*', note.title)
 
     def newnote(self):
-        self.notelist.append(note())
+        self.notelist.append(note(node=self.title))
         self.notelist[-1].finish()
 
 
@@ -113,8 +119,8 @@ def parser(arg):
             else:
                 return note(arguments[1])
 
-        if arguments[0] == 'nn' or arguments[0] == 'newnote':
-            exit()
+        if arguments[0] == 'q' or arguments[0] == 'quit':
+            quit()
 
 # nb = notebook('Mongoose')
 # nb.newnote()
