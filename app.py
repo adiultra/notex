@@ -1,8 +1,6 @@
 import notebook as nb
-import json
+# import json
 
-data = open("data.json", 'r+')
-
-notebook = nb.notebook()
-
-notes = json.load(data)
+while True:
+    command = input('#>')
+    nb.parse(command)

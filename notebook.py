@@ -7,12 +7,19 @@ class note:
 
     def __init__(
         self,
-        title=input('Enter the note title :'),
-        tags=input('Enter Tags :').split(', '),
+        title='',
+        tags=[],
         content=''
     ):
-        self.title = title
-        self.tags = tags
+        if len(title):
+            self.title = title
+        else:
+            self.title = input('Enter Note title : ')
+
+        if len(tags):
+            self.tags = tags
+        else:
+            self.tags = input('Enter tags : ').split(', ')
 
         if len(content) == 0:
             self.content = edit.editor(
@@ -65,8 +72,11 @@ class note:
 class notebook:
     'Notebook class, a container for notes'
 
-    def __init__(self, title=input('Title for notebook : ')):
-        self.title = title
+    def __init__(self, title=''):
+        if len(title):
+            self.title = title
+        else:
+            self.title = input('Enter NoteBook title : ')
         self.notelist = []
 
     def display(self):
@@ -82,26 +92,29 @@ class notebook:
         self.notelist[-1].finish()
 
 
-def parse(arg):
+def parser(arg):
     'Parser for app console, returns note and notebook objects'
-    args = arg.split()  # Split arguments
+    arguments = arg.split()  # Split arguments
 
-    if len(args):
-        if args[0] == 'nnb' or args[0] == 'newnotebook':
+    if len(arguments):
+        if arguments[0] == 'nnb' or arguments[0] == 'newnotebook':
 
-            if len(args) == 1:
+            if len(arguments) == 1:
                 return notebook()
 
             else:
-                return notebook(args[1])
+                return notebook(arguments[1])
 
-        if args[0] == 'nn' or args[0] == 'newnote':
+        if arguments[0] == 'nn' or arguments[0] == 'newnote':
 
-            if len(args) == 1:
+            if len(arguments) == 1:
                 return note()
 
             else:
-                return note(args[1])
+                return note(arguments[1])
+
+        if arguments[0] == 'nn' or arguments[0] == 'newnote':
+            exit()
 
 # nb = notebook('Mongoose')
 # nb.newnote()
