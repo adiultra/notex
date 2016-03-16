@@ -1,6 +1,7 @@
 import os
 import edit
 
+
 '''
 Terminologies:
 
@@ -97,30 +98,11 @@ class notebook:
         self.notelist.append(note(node=self.title))
         self.notelist[-1].finish()
 
+    def isnote(self, title):
+        for note in self.notelist:
+            if note.title == title:
+                return True
 
-def parser(arg):
-    'Parser for app console, returns note and notebook objects'
-    arguments = arg.split()  # Split arguments
-
-    if len(arguments):
-        if arguments[0] == 'nnb' or arguments[0] == 'newnotebook':
-
-            if len(arguments) == 1:
-                return notebook()
-
-            else:
-                return notebook(arguments[1])
-
-        if arguments[0] == 'nn' or arguments[0] == 'newnote':
-
-            if len(arguments) == 1:
-                return note()
-
-            else:
-                return note(arguments[1])
-
-        if arguments[0] == 'q' or arguments[0] == 'quit':
-            quit()
 
 # nb = notebook('Mongoose')
 # nb.newnote()

@@ -6,6 +6,10 @@ class note:
         self.title = title
         self.body = body
 
+    def display(self):
+        print('\nTitle :', self.title)
+        print('\nBody :', self.body)
+
 films = [
     [123, "I am cool"],
     [234, "You guessed it"]
@@ -13,15 +17,19 @@ films = [
 
 g = note("What", "Do you mean")
 
+f = open('data.json', 'w')
+
 
 def jdefault(o):
     return o.__dict__
 
-print(json.dumps(films, indent=4))
-print(json.dumps(g, default=jdefault))
+jdump = json.dumps(g, default=jdefault, indent=4)
 
-jdump = json.dumps(g, default=jdefault)
+f.write(jdump)
+f.close()
 
-obj = note(json.loads(jdump)['title'], json.loads(jdump)['body'])
+f = open('data.json', 'r')
+j = f.read()
+obj = note(json.loads(j)['title'], json.loads(j)['body'])
 
-print(obj.body)
+obj.display()
