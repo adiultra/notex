@@ -6,13 +6,16 @@ import json
 # Default Variables
 notebooks = []
 
+# load json data for notebooks
+jd = open('data.json', 'r')
+
 
 def initialize():
-    'loads the json dump to vaiables'
-    jd = open('data.json', 'r')
-
     for ntb in jd.readlines():
-        notebooks.append(nb.notebook(json.loads(ntb)['title']))
+        jntb = json.loads(ntb)
+        append_ntb = nb.notebook(jntb['title'])
+        append_ntb.notelist = jntb['notelist']
+        notebooks.append(append_ntb)
 
 
 def finalize():
@@ -20,7 +23,15 @@ def finalize():
     jd = open('data.json', 'w')
 
     for ntb in notebooks:
-        jd.write(json.dumps(ntb, default=jdefault))
+        jd.writeline(json.dumps(ntb, default=jdefault))
+
+
+def opennb(title):
+    for ntb in notebooks:
+        if ntb.title == title:
+            print(ntb.title)
+            return ntb
+            break
 
 
 def parse(arg):
@@ -28,10 +39,14 @@ def parse(arg):
     arguments = arg.split()  # Split arguments
 
     if len(arguments):
+        if arguments[0] == 'onb' or arguments[0] == 'opennotebook':
+            if len(arguments) == 2:
+                onb = opennb(arguments[1])
+
         if arguments[0] == 'nnb' or arguments[0] == 'newnotebook':
 
             if len(arguments) == 1:
-                notebooks.append(nb.notebook())
+                notebooks.append(nb.notebook(node=onb.title))
 
             else:
                 notebooks.appned(nb.notebook(arguments[1]))
@@ -55,7 +70,6 @@ def parse(arg):
 
 
 if __name__ == "__main__":
-    initialize()
 
     while True:
         parse(input('#>'))

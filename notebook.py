@@ -29,7 +29,13 @@ class note:
             self.title = input('Enter Note title : ')
 
         if os.path.isfile('notebook/'+self.title+'.json'):
-            pass
+            # If file exists, load note from the file
+            self.file = open('notebook/'+self.title+'.json', 'r+')
+            jload = json.loads(self.file.read())
+            self.title = jload['title']
+            self.tags = jload['tags']
+            self.content = jload['content']
+            self.node = jload['node']
 
         else:
             if len(tags):
@@ -71,7 +77,7 @@ class note:
 
     def rewrite(self):
         'Rewrite the note to the file, works as a save function'
-        towrite = json.dumps(self, default=jdefault)
+        towrite = json.dumps(self, default=jdefault, indent=4)
         self.file.write(towrite)
 
     def finish(self):
