@@ -1,13 +1,10 @@
+from functions import jdefault
 import notebook as nb
 import json
 
 
 # Default Variables
 notebooks = []
-
-
-def jdefault(o):
-    return o.__dict__
 
 
 def initialize():

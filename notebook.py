@@ -1,6 +1,7 @@
+from functions import jdefault
 import os
 import edit
-
+import json
 
 '''
 Terminologies:
@@ -27,29 +28,33 @@ class note:
         else:
             self.title = input('Enter Note title : ')
 
-        if len(tags):
-            self.tags = tags
-        else:
-            self.tags = input('Enter tags : ').split(', ')
-
-        if len(content) == 0:
-            self.content = edit.editor(
-                box=False,
-                title=self.title,
-                win_location=(2, 2)
-            )
+        if os.path.isfile('notebook/'+self.title+'.json'):
+            pass
 
         else:
-            self.content = content
+            if len(tags):
+                self.tags = tags
+            else:
+                self.tags = input('Enter tags : ').split(', ')
 
-        self.node = node
+            if len(content) == 0:
+                self.content = edit.editor(
+                    box=False,
+                    title=self.title,
+                    win_location=(2, 2)
+                )
 
-        self.file = open('notebook/'+self.title+'.txt', 'w')
-        self.rewrite()
+            else:
+                self.content = content
+
+            self.node = node
+
+            self.file = open('notebook/'+self.title+'.json', 'w')
+            self.rewrite()
 
     def display(self):
         'Display the note, This uses `pager` since the notes may be long'
-        os.system('pager notebook/'+self.title+'.txt')
+        os.system('pager notebook/'+self.title+'.json')
 
     def edit(self):
         'Edit the note content'
@@ -66,10 +71,7 @@ class note:
 
     def rewrite(self):
         'Rewrite the note to the file, works as a save function'
-        towrite = 'Title : '+self.title+'\n\n'
-        towrite += repr(self.tags)+'\n\n'
-        towrite += self.content
-
+        towrite = json.dumps(self, default=jdefault)
         self.file.write(towrite)
 
     def finish(self):
